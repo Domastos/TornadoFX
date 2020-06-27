@@ -31,7 +31,31 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
     }
 }
 
-fun Calculator.evaluate(expression: MutableList<String>) {
+fun Calculator.evaluate(expression: MutableList<String>):Int {
+    var lastItem = ""
+    var count = 0
+
+    for (item in expression) {
+        when {
+            count == 0 -> {
+                lastItem = item
+                count++
+            }
+            lastItem == "(" && isOperator(item) -> {
+                display.text = "BadSyntax"
+                return 1
+            }
+            lastItem == ")" && item.isDouble() -> {
+                display.text = "BadSyntax"
+                return 1
+            }
+            else -> {
+                lastItem = item
+                count++
+            }
+        }
+    }
+
     display.text = ""
     for (token in expression) {
         when{
@@ -84,11 +108,8 @@ fun Calculator.evaluate(expression: MutableList<String>) {
     }
     display.text += valStack.peek().toString()
     expressionList.clear()
+    return 1
 }
-
-
-
-
 
 fun Calculator.isOperator(character: String): Boolean {
         return when (character) {
@@ -96,3 +117,4 @@ fun Calculator.isOperator(character: String): Boolean {
             else -> false
         }
 }
+

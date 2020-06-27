@@ -3,7 +3,6 @@ import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 import javafx.scene.control.Button
 import tornadofx.*
-import java.io.StringWriter
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -43,7 +42,7 @@ class Calculator : View() {
             else -> {
                 when (op) {
                     "*", "/", "(", ")", "^", "%", "v" -> extendExpression(op)
-                    "1/x", "x²", "x³", "√x", "|x|" -> evaluateInline(op)
+                    "1/x", "x²", "x³", "√x", "mod" -> evaluateInline(op)
                     "=" -> doEvaluation()
                     "DEL" ->  display.text = display.text.dropLast(1)
                     "C" -> display.text = ""
@@ -85,6 +84,12 @@ class Calculator : View() {
                 display.text = ""
                 display.text += ("$x³")
             }
+            "mod" -> {
+                val x = display.text
+                expressionList.add(display.text.removePrefix("-"))
+                display.text = ""
+                display.text += ("|$x|")
+            }
 
         }
 
@@ -107,6 +112,12 @@ class Calculator : View() {
                 displayExpression.text.last() == ')' -> {
                     extendExpression(op)
                 }
+                isOperator(expressionList.last()) && display.text == "" -> {
+                    expressionList.removeLast()
+                    expressionList.add(op)
+                    displayExpression.text = displayExpression.text.dropLast(1)
+                    displayExpression.text += op
+                }
                 display.text.isEmpty() -> {
                     display.text += op
                 }
@@ -115,27 +126,55 @@ class Calculator : View() {
                 }
             }
         } catch (e: NoSuchElementException) {
-            extendExpression(op)
+            when {
+                display.text.isEmpty() -> {
+                    display.text += op
+                }
+                else -> {
+                    extendExpression(op)
+                }
+            }
         }
     }
 
     private fun extendExpression(op: String) {
-        when {
-            Regex("[+-]?1/\\d|\\d²|\\d³|√\\d").matches(display.text) -> {
-                expressionList.add(op)
+        try {
+            when {
+                Regex("[+-]?1/\\d|\\d²|\\d³|√\\d|\\|[+-]?\\d\\|").matches(display.text) -> {
+                    expressionList.add(op)
+                    displayExpression.text += display.text
+                    displayExpression.text += op
+                    display.text = ""
+                }
+                isOperator(expressionList.last()) && display.text == "" -> {
+                    expressionList.removeLast()
+                    expressionList.add(op)
+                    displayExpression.text = displayExpression.text.dropLast(1)
+                    displayExpression.text += op
+                }
+//                expressionList.last() == "("
+                display.text != "" -> {
+                    expressionList.add(display.text)
+                    expressionList.add(op)
+                    displayExpression.text += display.text
+                    displayExpression.text += op
+                    display.text = ""
+                }
+                else -> {
+                    expressionList.add(display.text)
+                    expressionList.add(op)
+                    displayExpression.text += display.text
+                    displayExpression.text += op
+                    display.text = ""
+                }
             }
-            display.text != "" -> {
-                expressionList.add(display.text)
-                expressionList.add(op)
-            }
-            else -> {
-                expressionList.add(op)
-            }
+        } catch (e: NoSuchElementException) {
+            expressionList.add(display.text)
+            expressionList.add(op)
+            displayExpression.text += display.text
+            displayExpression.text += op
+            display.text = ""
         }
-
-        displayExpression.text += display.text
-        displayExpression.text += op
-        display.text = ""
     }
 
     private fun doEvaluation(){
