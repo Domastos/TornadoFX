@@ -45,7 +45,7 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
                 display.text = "BadSyntax"
                 return 1
             }
-            lastItem == ")" && item.isDouble() -> {
+            lastItem == ")" && (item.isDouble()||item=="π"||item=="e") -> {
                 display.text = "BadSyntax"
                 return 1
             }
