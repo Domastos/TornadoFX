@@ -15,7 +15,7 @@ class Application : App() {
         importStylesheet("/style.css")
         stage.isResizable = false
         super.start(stage)
-            }
     }
+}
 
 

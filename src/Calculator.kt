@@ -44,15 +44,15 @@ class Calculator : View() {
                     "*", "/", "(", ")", "^", "%", "v" -> extendExpression(op)
                     "1/x", "x²", "x³", "√x", "mod" -> evaluateInline(op)
                     "=" -> doEvaluation()
-                    "DEL" ->  display.text = display.text.dropLast(1)
+                    "DEL" -> display.text = display.text.dropLast(1)
                     "C" -> display.text = ""
                     "CE" -> clearExpression()
                     "π" -> display.text += "π"
                     "e" -> display.text += "e"
-                    }
                 }
             }
         }
+    }
 
 
     private fun evaluateInline(op: String) {
@@ -94,7 +94,6 @@ class Calculator : View() {
         }
 
     }
-
 
 
     private fun checkNumSyntax(op: String): Int {
@@ -177,7 +176,7 @@ class Calculator : View() {
         }
     }
 
-    private fun doEvaluation(){
+    private fun doEvaluation() {
         expressionList.add(display.text)
         displayExpression.text += display.text
         evaluate(expressionList)

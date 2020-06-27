@@ -22,7 +22,7 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
         "*" -> a * b
         "/" -> a / b
         "^" -> a.pow(b)
-        "v" -> a.pow(1/b)
+        "v" -> a.pow(1 / b)
         "%" -> a % b
         else -> { // Note the block
             print("op is on list yet")
@@ -31,7 +31,7 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
     }
 }
 
-fun Calculator.evaluate(expression: MutableList<String>):Int {
+fun Calculator.evaluate(expression: MutableList<String>): Int {
     var lastItem = ""
     var count = 0
     //check syntax
@@ -45,15 +45,15 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
                 display.text = "BadSyntax"
                 return 1
             }
-            lastItem == ")" && (item.isDouble()||item=="π"||item=="e") -> {
+            lastItem == ")" && (item.isDouble() || item == "π" || item == "e") -> {
                 display.text = "BadSyntax"
                 return 1
             }
-            lastItem == ")" && (item.isDouble()||item=="π"||item=="e") -> {
+            lastItem == ")" && (item.isDouble() || item == "π" || item == "e") -> {
                 display.text = "BadSyntax"
                 return 1
             }
-            item == "(" && (lastItem.isDouble()||lastItem=="π"||lastItem=="e") -> {
+            item == "(" && (lastItem.isDouble() || lastItem == "π" || lastItem == "e") -> {
                 display.text = "BadSyntax"
                 return 1
             }
@@ -67,7 +67,7 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
     //evaluate
     display.text = ""
     for (token in expression) {
-        when{
+        when {
             token == "(" -> {
                 opStack.push(token)
             }
@@ -121,9 +121,9 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
 }
 
 fun Calculator.isOperator(character: String): Boolean {
-        return when (character) {
-            "-", "+", "*", "/", "%", "^", "v" -> true
-            else -> false
-        }
+    return when (character) {
+        "-", "+", "*", "/", "%", "^", "v" -> true
+        else -> false
+    }
 }
 
