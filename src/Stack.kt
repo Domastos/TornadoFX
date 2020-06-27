@@ -34,7 +34,7 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
 fun Calculator.evaluate(expression: MutableList<String>):Int {
     var lastItem = ""
     var count = 0
-
+    //check syntax
     for (item in expression) {
         when {
             count == 0 -> {
@@ -49,6 +49,14 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
                 display.text = "BadSyntax"
                 return 1
             }
+            lastItem == ")" && (item.isDouble()||item=="π"||item=="e") -> {
+                display.text = "BadSyntax"
+                return 1
+            }
+            item == "(" && (lastItem.isDouble()||lastItem=="π"||lastItem=="e") -> {
+                display.text = "BadSyntax"
+                return 1
+            }
             else -> {
                 lastItem = item
                 count++
@@ -56,6 +64,7 @@ fun Calculator.evaluate(expression: MutableList<String>):Int {
         }
     }
 
+    //evaluate
     display.text = ""
     for (token in expression) {
         when{
