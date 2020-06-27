@@ -1,10 +1,12 @@
 import tornadofx.*
 import java.lang.Double.parseDouble
+import kotlin.math.pow
 
 fun Calculator.precedence(op: String): Int {
     return when (op) {
         "+", "-" -> 1
-        "*", "/" -> 2
+        "*", "/", "%" -> 2
+        "^", "v" -> 3
         else -> { // Note the block
             print("op is on list yet")
             0;
@@ -18,7 +20,8 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
         "-" -> a - b
         "*" -> a * b
         "/" -> a / b
-//        "^" -> a ^ b
+        "^" -> a.pow(b)
+        "%" -> a % b
         else -> { // Note the block
             print("op is on list yet")
             0.0;
@@ -44,6 +47,12 @@ fun Calculator.evaluate(expression: MutableList<String>) {
             }
             token.isDouble() -> {
                 valStack.push(parseDouble(token))
+            }
+            token == "π" -> {
+                valStack.push(Math.PI)
+            }
+            token == "e" -> {
+                valStack.push(Math.E)
             }
             isOperator(token) -> {
                 opStack.push(token)

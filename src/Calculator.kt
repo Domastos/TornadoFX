@@ -47,7 +47,8 @@ class Calculator : View() {
                     "DEL" ->  display.text = display.text.dropLast(1)
                     "C" -> display.text = ""
                     "CE" -> clearExpression()
-//                    "π" -> display.text += "π"
+                    "π" -> display.text += "π"
+                    "e" -> display.text += "e"
                     }
                 }
             }
