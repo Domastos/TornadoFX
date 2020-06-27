@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox id="calculator" prefHeight="257.0" prefWidth="194.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label id="display" fx:id="displayExpression" />
+    <Label id="display" fx:id="display" />
+    <HBox>
+        <Button text="+/-" />
+        <Button text="\%" />
+        <Button styleClass="del" text="CE" />
+        <Button styleClass="del" text="C" />
+        <Button styleClass="del" text="DEL" />
+    </HBox>
+    <HBox>
+        <Button text="1/x" />
+        <Button text="x²" />
+        <Button text="x³" />
+        <Button text="√x" />
+        <Button prefHeight="25.0" prefWidth="36.0" styleClass="op" text="/" />
+    </HBox>
+    <HBox>
+        <Button text="|x|" />
+        <Button text="7" />
+        <Button text="8" />
+        <Button text="9" />
+        <Button styleClass="op" text="*" />
+    </HBox>
+    <HBox>
+        <Button text="π" />
+        <Button text="4" />
+        <Button text="5" />
+        <Button text="6" />
+        <Button styleClass="op" text="-" />
+    </HBox>
+    <HBox>
+        <Button text="e" />
+        <Button text="1" />
+        <Button text="2" />
+        <Button text="3" />
+        <Button styleClass="plus" text="+" />
+    </HBox>
+    <HBox>
+        <Button text="(" />
+        <Button text="." />
+        <Button text="0" />
+        <Button text=")" />
+        <Button text="." />
+    </HBox>
+    <HBox>
+        <Button styleClass="equality" text="=" />
+    </HBox>
+</VBox>

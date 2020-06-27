@@ -1,0 +1,59 @@
+.root {
+    -fx-font-size: 18;
+    /*-fx-content-display: flex;*/
+}
+
+#calculator {
+    -fx-pref-width: 100%;
+    -fx-pref-width: 100%;
+    -fx-min-width: 300;
+    -fx-min-height: 440;
+    /*-fx-height:100%;*/
+    -fx-display-caret: flex;
+    /*-fx-display:flex;*/
+    /*-fx-flex-wrap:wrap;*/
+    -fx-alignment: center-right;
+    -fx-background-color: #5f5f5f;
+}
+
+#display {
+    -fx-font-family: monospace;
+    -fx-alignment: bottom-right;
+    -fx-padding: 20 5 5 5;
+    -fx-font-size: 40;
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-pref-width: 120;
+    -fx-pref-height: 60;
+    -fx-background-color: lightgray;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #979797;
+    -fx-border-width: 0.5;
+}
+
+.button.equality {
+    -fx-pref-width: 375;
+    -fx-alignment: center;
+    -fx-padding: 0 25;
+}
+
+.button.del {
+    -fx-background-color: #d3b577;
+}
+
+.button.plus {
+    -fx-pref-height: 60;
+}
+
+.button:armed {
+    -fx-background-color: darkgrey;
+}
+
+.button:hover {
+    -fx-border-color: #f7fc8b;
+    -fx-indeterminate-bar-animation-time: 3s;
+
+}
