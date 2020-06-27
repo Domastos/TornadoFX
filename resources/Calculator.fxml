@@ -8,7 +8,7 @@
     <Label id="display" fx:id="displayExpression" />
     <Label id="display" fx:id="display" />
     <HBox>
-        <Button text="+/-" />
+        <Button text="v" />
         <Button text="\%" />
         <Button styleClass="del" text="CE" />
         <Button styleClass="del" text="C" />

@@ -42,7 +42,8 @@ class Calculator : View() {
 
             else -> {
                 when (op) {
-                    "*", "/", "(", ")", "^", "%" -> extendExpression(op)
+                    "*", "/", "(", ")", "^", "%", "v" -> extendExpression(op)
+                    "1/x", "x²", "x³", "√x", "|x|" -> evaluateInline(op)
                     "=" -> doEvaluation()
                     "DEL" ->  display.text = display.text.dropLast(1)
                     "C" -> display.text = ""
@@ -53,6 +54,41 @@ class Calculator : View() {
                 }
             }
         }
+
+
+    private fun evaluateInline(op: String) {
+        when (op) {
+            "1/x" -> {
+                expressionList.add("1")
+                expressionList.add("/")
+                expressionList.add(display.text)
+
+                val x = display.text
+                display.text = ""
+                display.text += ("1/$x")
+            }
+            "x²" -> {
+                expressionList.add(display.text)
+                expressionList.add("^")
+                expressionList.add("2")
+
+                val x = display.text
+                display.text = ""
+                display.text += ("$x²")
+            }
+            "x³" -> {
+                expressionList.add(display.text)
+                expressionList.add("^")
+                expressionList.add("3")
+
+                val x = display.text
+                display.text = ""
+                display.text += ("$x³")
+            }
+
+        }
+
+    }
 
 
 
@@ -84,13 +120,19 @@ class Calculator : View() {
     }
 
     private fun extendExpression(op: String) {
-        if (display.text != "") {
-            expressionList.add(display.text)
-            expressionList.add(op)
+        when {
+            Regex("[+-]?1/\\d|\\d²|\\d³|√\\d").matches(display.text) -> {
+                expressionList.add(op)
+            }
+            display.text != "" -> {
+                expressionList.add(display.text)
+                expressionList.add(op)
+            }
+            else -> {
+                expressionList.add(op)
+            }
         }
-        else {
-            expressionList.add(op)
-        }
+
         displayExpression.text += display.text
         displayExpression.text += op
         display.text = ""

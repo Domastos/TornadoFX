@@ -1,5 +1,6 @@
 import tornadofx.*
 import java.lang.Double.parseDouble
+import java.util.*
 import kotlin.math.pow
 
 fun Calculator.precedence(op: String): Int {
@@ -21,6 +22,7 @@ fun Calculator.applyOperation(a: Double, b: Double, op: String): Double {
         "*" -> a * b
         "/" -> a / b
         "^" -> a.pow(b)
+        "v" -> a.pow(1/b)
         "%" -> a % b
         else -> { // Note the block
             print("op is on list yet")
@@ -55,17 +57,17 @@ fun Calculator.evaluate(expression: MutableList<String>) {
                 valStack.push(Math.E)
             }
             isOperator(token) -> {
-                opStack.push(token)
-            }
-            else -> {
-                while(opStack.size != 0 && precedence(opStack.peek()) >= precedence(token))
-                {
-                    val val2 = valStack.pop()
-                    val val1 = valStack.pop()
-                    val op = opStack.pop()
-                    valStack.add(applyOperation(val1, val2, op))
+                try {
+                    while (precedence(opStack.peek()) >= precedence(token) && opStack.size != 0) {
+                        val val2 = valStack.pop()
+                        val val1 = valStack.pop()
+                        val op = opStack.pop()
+                        valStack.add(applyOperation(val1, val2, op))
+                    }
+                    opStack.push(token)
+                } catch (e: EmptyStackException) {
+                    opStack.push(token)
                 }
-                opStack.push(token)
             }
         }
     }
