@@ -3,7 +3,9 @@ import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 import javafx.scene.control.Button
 import tornadofx.*
+import java.io.StringWriter
 import java.util.*
+import kotlin.NoSuchElementException
 
 class Calculator : View() {
 
@@ -15,75 +17,93 @@ class Calculator : View() {
     @FXML
     lateinit var displayExpression: Label
 
-    val operator_array = charArrayOf('+', '-', '*', '/')
-    var first_number: Boolean = true
-    var shown_result: Boolean = false
-    var division_error: Boolean = false
-    var sign_: Char = '\u0000'
-
-    var NumberStack = Stack<Double>()
-    var SignStack = Stack<Char>()
-
-    //**********************************************************************
+    var expressionList = mutableListOf<String>()
     var valStack = Stack<Double>()
-    var opStack = Stack<Char>()
-    var isNegative = false
-    var expectOperator = false
-    var count = 0
+    var opStack = Stack<String>()
 
 
     init {
         title = "Calculator"
         root.lookupAll(".button").forEach { button ->
             button.setOnMouseClicked {
-//                stack((button as Button).text)
                 checkOperator((button as Button).text)
             }
         }
     }
 
-    val displayValue: Double
-        get() = when (display.text) {
-            "" -> 0.0
-            else -> display.text.toDouble()
-        }
-
-
-    fun checkOperator(op: String) {
-        if (Regex("\\d|\\.").matches(op)) {
-            checkNumSyntax(op)
-        } else if (Regex("[+-]").matches(op)) {
-            checkifSign(op)
-        }
-        else {
-            when (op) {
-                "*", "/", "(", ")", "^", "%" -> extendExpression(op)
-                "=" -> evaluate(displayExpression.text)
+    private fun checkOperator(op: String) {
+        when {
+            Regex("\\d|\\.").matches(op) -> {
+                checkNumSyntax(op)
             }
+            Regex("[+-]").matches(op) -> {
+                checkifSign(op)
+            }
+
+            else -> {
+                when (op) {
+                    "*", "/", "(", ")", "^", "%" -> extendExpression(op)
+                    "=" -> doEvaluation()
+                    "DEL" ->  display.text = display.text.dropLast(1)
+                    "C" -> display.text = ""
+                    "CE" -> clearExpression()
+//                    "π" -> display.text += "π"
+                    }
+                }
+            }
+        }
+
+
+
+    private fun checkNumSyntax(op: String): Int {
+        return if ((Regex("[+-]?\\d+\\.\\d*").matches(display.text) && op == ".") || (display.text.isEmpty() && op == ".")) {
+            1
+        } else {
+            display.text += op
+            2
         }
     }
 
-    fun checkifSign(op: String) {
-        if (display.text.isEmpty()) {
-            display.text += op
-        } else {
+    private fun checkifSign(op: String) {
+        try {
+            when {
+                displayExpression.text.last() == ')' -> {
+                    extendExpression(op)
+                }
+                display.text.isEmpty() -> {
+                    display.text += op
+                }
+                else -> {
+                    extendExpression(op)
+                }
+            }
+        } catch (e: NoSuchElementException) {
             extendExpression(op)
         }
     }
 
-    fun checkNumSyntax(op: String): Int {
-        if ((Regex("[+-]?\\d+\\.\\d*").matches(display.text) && op == ".") || (display.text.isEmpty() && op == ".")) {
-            return 1
-        } else {
-            display.text += op
-            return 2
+    private fun extendExpression(op: String) {
+        if (display.text != "") {
+            expressionList.add(display.text)
+            expressionList.add(op)
         }
-    }
-
-    fun extendExpression(op: String) {
+        else {
+            expressionList.add(op)
+        }
         displayExpression.text += display.text
         displayExpression.text += op
         display.text = ""
+    }
+
+    private fun doEvaluation(){
+        expressionList.add(display.text)
+        displayExpression.text += display.text
+        evaluate(expressionList)
+    }
+
+    private fun clearExpression() {
+        expressionList.clear()
+        displayExpression.text = ""
     }
 
 
